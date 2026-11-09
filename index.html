@@ -109,14 +109,14 @@ footer a{color:var(--muted)}
 @media (max-width:860px){
   .wash{background:radial-gradient(90% 40% at 50% 22%,var(--glow),transparent 70%)}
   .page{grid-template-columns:1fr;gap:0}
-  .viz{order:-1;height:50vh;height:50svh;z-index:3;
+  .viz{order:-1;height:42vh;height:42svh;z-index:3;
     margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px))) calc(-1*max(16px,env(safe-area-inset-right,0px)));
     background:radial-gradient(70% 70% at 50% 45%,#15161b,var(--bg) 78%);border-bottom:1px solid var(--line)}
   .viz::after{content:"";position:absolute;left:0;right:0;bottom:-41px;height:40px;background:linear-gradient(var(--bg),transparent);pointer-events:none}
   .chap{top:14px;left:16px;gap:10px}.chap .lbl{display:none}.hint{display:none}.floor{top:78%;width:60%}
   .hl{margin-top:28px;gap:8px 20px}
   .colors{bottom:12px}.colors .name{display:none}.colors .row{padding:7px 12px;gap:12px}.sw{width:22px;height:22px}
-  .sec{min-height:62vh;min-height:62svh;padding-block:56px 48px;max-width:none}
+  .sec{min-height:52vh;min-height:52svh;padding-block:44px 40px;max-width:none}
   .sec:first-child{padding-top:36px}
   h1{font-size:clamp(40px,12vw,56px)}
   h2{font-size:clamp(28px,8vw,36px)}
@@ -292,7 +292,7 @@ const fail=m=>{status.innerHTML='<div>'+m+'</div>'};
 if(!window.THREE||!THREE.GLTFLoader){fail('3D-модель не загрузилась. Обновите страницу.');return}
 
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setPixelRatio(Math.min(devicePixelRatio,innerWidth<=860?1.5:2));
 renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;
 renderer.physicallyCorrectLights=true;
 const scene=new THREE.Scene();
