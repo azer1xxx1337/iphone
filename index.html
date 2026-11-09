@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Обзор iPhone 18 Pro с интерактивной 3D-моделью">
+<title>iPhone 18 Pro — обзор</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#000000; --fg:#f5f5f7; --muted:#86868b; --dim:#3a3a3d; --line:#1d1d1f;
+  --glow:rgba(120,135,170,.22); --glow2:rgba(255,255,255,.05);
+  --display:"Inter Tight", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --body:"Inter", "Helvetica Neue", Arial, system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--fg);font:17px/1.5 var(--body);letter-spacing:-.01em;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wash{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(55% 60% at 76% 48%,var(--glow),transparent 70%),linear-gradient(180deg,var(--glow2),transparent 40%)}
+a{color:var(--fg)}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px;border-radius:4px}
+
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:8;background:rgba(0,0,0,.7);backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);border-bottom:1px solid var(--line);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.bar .in{max-width:1200px;margin:0 auto;height:52px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.bar b{font:600 19px/1 var(--display);letter-spacing:-.02em}
+.nav{display:flex;gap:22px}
+.nav a{font-size:12px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav a:hover,.nav a.on{color:var(--fg)}
+@media (max-width:1000px){.nav{display:none}}
+
+.page{position:relative;z-index:1;max-width:1200px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.text{min-width:0}
+.viz{position:sticky;top:calc(env(safe-area-inset-top,0px) + 52px);height:calc(100vh - 52px);min-width:0}
+.viz canvas{display:block;width:100%;height:100%}
+.status{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:14px;text-align:center;padding:24px;pointer-events:none;transition:opacity .4s}
+.status .bar2{width:160px;height:2px;background:var(--dim);border-radius:2px;margin:12px auto 0;overflow:hidden}
+.status .bar2 i{display:block;height:100%;width:0;background:var(--fg);transition:width .2s}
+
+.hl{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:44px;padding-top:22px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.hl span{display:flex;align-items:center;gap:8px}
+.hl b{color:var(--fg);font-weight:600}
+.chap{position:absolute;top:28px;left:28px;z-index:2;display:flex;align-items:center;gap:14px;font-size:13px;color:var(--muted)}
+.chap .n{font-variant-numeric:tabular-nums;color:var(--fg);font-weight:600}
+.chap .dots{display:flex;gap:6px}
+.chap .dots i{width:6px;height:6px;border-radius:3px;background:var(--dim);transition:width .35s,background .35s}
+.chap .dots i.on{width:18px;background:var(--fg)}
+.chap .lbl{min-width:9ch}
+.floor{position:absolute;left:50%;top:84%;width:56%;max-width:340px;height:44px;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(closest-side,rgba(170,180,205,.22),transparent);filter:blur(6px);pointer-events:none}
+.hint{position:absolute;right:28px;top:28px;z-index:2;font-size:12px;color:var(--muted);transition:opacity .5s;pointer-events:none}
+.viz canvas{cursor:grab;touch-action:pan-y}.viz canvas:active{cursor:grabbing}
+.colors{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:12px;z-index:2}
+.colors .name{font-size:13px;color:var(--fg);min-height:1em}
+.colors .row{display:flex;gap:14px;padding:10px 14px;border-radius:999px;background:rgba(28,28,30,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.08)}
+.sw{width:26px;height:26px;border-radius:50%;border:0;padding:0;cursor:pointer;position:relative;box-shadow:inset 0 -5px 8px rgba(0,0,0,.35),inset 0 3px 6px rgba(255,255,255,.3)}
+.sw::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1.5px solid transparent;transition:border-color .2s}
+.sw[aria-pressed="true"]::after{border-color:var(--fg)}
+.sec{min-height:calc(100vh - 52px);display:flex;flex-direction:column;justify-content:center;padding-block:72px;max-width:500px}
+.kicker{font:600 15px/1.2 var(--display);color:var(--muted);margin:0 0 12px;text-transform:uppercase;letter-spacing:.08em}
+h1,h2{font-family:var(--display);font-weight:700;letter-spacing:-.035em;line-height:1.05;margin:0 0 20px;text-wrap:balance}
+h1{font-size:clamp(48px,6.4vw,84px);background:linear-gradient(180deg,#ffffff 30%,#9a9aa3);-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{font-size:clamp(32px,3.8vw,48px)}
+.lead{font-size:clamp(18px,1.5vw,20px);line-height:1.5;color:var(--muted);margin:0 0 28px;max-width:40ch}
+.lead strong{color:var(--fg);font-weight:600}
+.price{display:flex;align-items:center;gap:20px;flex-wrap:wrap;font-size:16px;color:var(--muted)}
+.pill{display:inline-block;padding:10px 20px;border-radius:999px;background:var(--fg);color:var(--bg);font:500 15px/1 var(--body);text-decoration:none}
+
+.stats{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:40px;margin-top:4px}
+.stat .v{font:700 clamp(30px,3.2vw,42px)/1 var(--display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;white-space:nowrap}
+.stat .v small{font-size:.5em;font-weight:600;margin-left:3px}
+.stat .k{font-size:13px;color:var(--muted);margin-top:8px;max-width:16ch}
+@media (max-width:520px){.stats{grid-template-columns:repeat(2,auto);gap:28px 36px}}
+
+.verdict{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.verdict h3{font:600 13px/1 var(--display);color:var(--muted);margin:0 0 12px;text-transform:uppercase;letter-spacing:.08em}
+.verdict ul{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:16px}
+.verdict li{padding-top:10px;border-top:1px solid var(--line)}
+@media (max-width:520px){.verdict{grid-template-columns:1fr}}
+
+.cmp{display:grid;font-size:15px;max-width:480px}
+.cr{display:grid;grid-template-columns:1.3fr 1fr 1fr;gap:12px;padding-block:13px;border-top:1px solid var(--line);align-items:baseline}
+.cr.head{border-top:0;padding-top:0;font:600 13px/1 var(--display);color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.cr.head span:nth-child(2){color:var(--fg)}
+.cr span:first-child{color:var(--muted)}
+.cr span{min-width:0;font-variant-numeric:tabular-nums}
+.cr .new{color:var(--fg);font-weight:600;position:relative;padding-left:14px}
+.cr .new::before{content:"";position:absolute;left:0;top:.55em;width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#ffffff,#8f9bb8)}
+.specs{margin:0;display:grid;max-width:480px}
+.specs div{display:grid;grid-template-columns:170px 1fr;gap:16px;padding-block:13px;border-top:1px solid var(--line)}
+.specs dt{color:var(--muted);font-size:14px}
+.specs dd{margin:0;font-size:15px;min-width:0}
+@media (max-width:520px){.specs div{grid-template-columns:1fr;gap:4px}.cr{font-size:14px;gap:8px}}
+.sec h2+.lead,.sec h1+.lead{margin-top:-4px}
+footer{position:relative;z-index:1;border-top:1px solid var(--line);color:var(--muted);font-size:12px;line-height:1.7;
+  padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+footer .in{max-width:1200px;margin:0 auto;display:grid;gap:6px}
+footer a{color:var(--muted)}
+
+.sec>*{transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.sec.pre>*{opacity:0;transform:translateY(24px)}
+.sec>*:nth-child(2){transition-delay:.06s}.sec>*:nth-child(3){transition-delay:.12s}.sec>*:nth-child(4){transition-delay:.18s}
+
+@media (max-width:860px){
+  .wash{background:radial-gradient(90% 40% at 50% 22%,var(--glow),transparent 70%)}
+  .page{grid-template-columns:1fr;gap:0}
+  .viz{order:-1;height:50vh;height:50svh;z-index:3;
+    margin-inline:calc(-1*max(16px,env(safe-area-inset-left,0px))) calc(-1*max(16px,env(safe-area-inset-right,0px)));
+    background:radial-gradient(70% 70% at 50% 45%,#15161b,var(--bg) 78%);border-bottom:1px solid var(--line)}
+  .viz::after{content:"";position:absolute;left:0;right:0;bottom:-41px;height:40px;background:linear-gradient(var(--bg),transparent);pointer-events:none}
+  .chap{top:14px;left:16px;gap:10px}.chap .lbl{display:none}.hint{display:none}.floor{top:78%;width:60%}
+  .hl{margin-top:28px;gap:8px 20px}
+  .colors{bottom:12px}.colors .name{display:none}.colors .row{padding:7px 12px;gap:12px}.sw{width:22px;height:22px}
+  .sec{min-height:62vh;min-height:62svh;padding-block:56px 48px;max-width:none}
+  .sec:first-child{padding-top:36px}
+  h1{font-size:clamp(40px,12vw,56px)}
+  h2{font-size:clamp(28px,8vw,36px)}
+  .lead{font-size:17px;margin-bottom:22px}
+  .stats{gap:22px 28px}
+  .stat .v{font-size:30px}
+}
+@media (prefers-reduced-motion:reduce){.sec>*{transition:none}.sec.pre>*{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<div class="wash" aria-hidden="true"></div>
+
+<header class="bar"><div class="in">
+  <b>iPhone 18 Pro</b>
+  <nav class="nav" aria-label="Разделы">
+    <a href="#display">Экран</a><a href="#camera">Камера</a><a href="#chip">Производительность</a><a href="#battery">Батарея</a><a href="#compare">Сравнение</a><a href="#specs">Характеристики</a><a href="#verdict">Итог</a>
+  </nav>
+</div></header>
+
+<div class="page">
+  <div class="text">
+    <section class="sec" id="top" data-pose="0">
+      <p class="kicker">Обзор</p>
+      <h1>iPhone 18 Pro</h1>
+      <p class="lead">Флагман Apple 2026 года. Разбираемся, что изменилось по сравнению с iPhone 17 Pro и кому имеет смысл обновляться.</p>
+      <div class="price"><span>От $1 199 · в продаже с сентября 2026</span><a class="pill" href="#display">Читать обзор</a></div>
+      <div class="hl"><span><b>A20 Pro</b> чип</span><span><b>6,3″</b> 120 Гц</span><span><b>3 × 48 Мп</b> камеры</span><span><b>до 27 ч</b> видео</span></div>
+    </section>
+
+    <section class="sec" id="display" data-pose="1">
+      <p class="kicker">Экран</p>
+      <h2>6,3 дюйма, OLED, 120 Гц</h2>
+      <p class="lead">Диагональ и разрешение остались прежними. Динамический остров стал заметно меньше: часть датчиков Face ID перенесли под экран, и полезной площади прибавилось.</p>
+      <div class="stats">
+        <div class="stat"><div class="v">6,3″</div><div class="k">диагональ</div></div>
+        <div class="stat"><div class="v">120<small>Гц</small></div><div class="k">адаптивная частота</div></div>
+        <div class="stat"><div class="v">458</div><div class="k">пикселей на дюйм</div></div>
+      </div>
+    </section>
+
+    <section class="sec" id="camera" data-pose="2">
+      <p class="kicker">Камера</p>
+      <h2>Три камеры по 48 Мп</h2>
+      <p class="lead">Основной, сверхширокоугольный и телеобъектив с 4-кратным оптическим зумом. Днём снимки детальные, видео пишется в 4K до 120 кадров в секунду. В помещении и при слабом свете заметен шум.</p>
+      <div class="stats">
+        <div class="stat"><div class="v">3×48<small>Мп</small></div><div class="k">тыльные камеры</div></div>
+        <div class="stat"><div class="v">4×</div><div class="k">оптический зум</div></div>
+        <div class="stat"><div class="v">18<small>Мп</small></div><div class="k">фронтальная</div></div>
+      </div>
+    </section>
+
+    <section class="sec" id="chip" data-pose="3">
+      <p class="kicker">Производительность</p>
+      <h2>Чип A20 Pro и 12 ГБ памяти</h2>
+      <p class="lead">Самый быстрый процессор Apple на сегодня. В тестах он заметно опережает прошлое поколение, а в работе нет ни задержек, ни подтормаживаний даже в тяжёлых играх.</p>
+      <div class="stats">
+        <div class="stat"><div class="v" data-count="4720">4 720</div><div class="k">Geekbench 7, одно ядро</div></div>
+        <div class="stat"><div class="v" data-count="12629">12 629</div><div class="k">Geekbench 7, многоядерный</div></div>
+      </div>
+    </section>
+
+    <section class="sec" id="battery" data-pose="4">
+      <p class="kicker">Батарея</p>
+      <h2>До двух дней работы</h2>
+      <p class="lead">В тесте с непрерывным воспроизведением видео телефон проработал почти 27 часов. При обычном использовании заряда хватает примерно на два дня.</p>
+      <div class="stats">
+        <div class="stat"><div class="v">27<small>ч</small></div><div class="k">видео без перерыва</div></div>
+        <div class="stat"><div class="v">40<small>Вт</small></div><div class="k">проводная зарядка</div></div>
+        <div class="stat"><div class="v">25<small>Вт</small></div><div class="k">MagSafe и Qi2</div></div>
+      </div>
+    </section>
+
+    <section class="sec" id="design" data-pose="5">
+      <p class="kicker">Корпус</p>
+      <h2>Прежние размеры, чуть больше вес</h2>
+      <p class="lead">Габариты совпадают с iPhone 17 Pro, но телефон стал тяжелее на 5 граммов. Края слегка скруглили. Четыре цвета: чёрный, серебристый, голубой и бургунди — их можно примерить на модели.</p>
+      <div class="stats">
+        <div class="stat"><div class="v">150<small>мм</small></div><div class="k">высота</div></div>
+        <div class="stat"><div class="v">8,8<small>мм</small></div><div class="k">толщина</div></div>
+        <div class="stat"><div class="v">211<small>г</small></div><div class="k">масса</div></div>
+      </div>
+    </section>
+
+    <section class="sec" id="compare" data-pose="6">
+      <p class="kicker">Сравнение</p>
+      <h2>Что изменилось по сравнению с iPhone 17 Pro</h2>
+      <p class="lead">Внешне телефоны почти не отличить. Разница внутри и в деталях.</p>
+      <div class="cmp" role="table" aria-label="iPhone 18 Pro и iPhone 17 Pro">
+        <div class="cr head" role="row"><span role="columnheader"></span><span role="columnheader">18 Pro</span><span role="columnheader">17 Pro</span></div>
+        <div class="cr" role="row"><span role="rowheader">Чип</span><span role="cell" class="new">A20 Pro</span><span role="cell">A19 Pro</span></div>
+        <div class="cr" role="row"><span role="rowheader">Динамический остров</span><span role="cell" class="new">Меньше</span><span role="cell">Стандартный</span></div>
+        <div class="cr" role="row"><span role="rowheader">Камеры</span><span role="cell">3 × 48 Мп</span><span role="cell">3 × 48 Мп</span></div>
+        <div class="cr" role="row"><span role="rowheader">Оптический зум</span><span role="cell">4×</span><span role="cell">4×</span></div>
+        <div class="cr" role="row"><span role="rowheader">Размеры, мм</span><span role="cell">150 × 71,9 × 8,8</span><span role="cell">150 × 71,9 × 8,8</span></div>
+        <div class="cr" role="row"><span role="rowheader">Масса</span><span role="cell" class="new">211 г</span><span role="cell">206 г</span></div>
+      </div>
+    </section>
+
+    <section class="sec" id="specs" data-pose="7">
+      <p class="kicker">Характеристики</p>
+      <h2>Коротко обо всём</h2>
+      <dl class="specs">
+        <div><dt>Экран</dt><dd>6,3″ OLED, 2622 × 1206, 1–120 Гц</dd></div>
+        <div><dt>Процессор</dt><dd>A20 Pro, 12 ГБ оперативной памяти</dd></div>
+        <div><dt>Память</dt><dd>от 256 ГБ</dd></div>
+        <div><dt>Основные камеры</dt><dd>48 Мп широкоугольная, 48 Мп сверхширокоугольная, 48 Мп телефото 4×</dd></div>
+        <div><dt>Фронтальная камера</dt><dd>18 Мп</dd></div>
+        <div><dt>Видео</dt><dd>4K до 120 кадров/с</dd></div>
+        <div><dt>Зарядка</dt><dd>40 Вт по проводу, 25 Вт MagSafe, Qi2</dd></div>
+        <div><dt>Связь</dt><dd>5G (модем C2), Wi-Fi 7, Bluetooth 6.0, USB-C</dd></div>
+        <div><dt>Защита</dt><dd>IP68</dd></div>
+        <div><dt>Цвета</dt><dd>чёрный, серебристый, голубой, бургунди</dd></div>
+      </dl>
+    </section>
+
+    <section class="sec" id="verdict" data-pose="8">
+      <p class="kicker">Итог</p>
+      <h2>Кому стоит покупать</h2>
+      <p class="lead">Владельцам iPhone 17 Pro обновляться незачем: отличий мало. Тем, у кого iPhone 15 Pro или старше, разница будет заметна в автономности, скорости и камере.</p>
+      <div class="verdict">
+        <div><h3>Плюсы</h3><ul><li>Автономность до двух дней</li><li>Высокая производительность</li><li>Компактный динамический остров</li></ul></div>
+        <div><h3>Минусы</h3><ul><li>Мало изменений к 17 Pro</li><li>Шум при слабом свете</li><li>Тяжелее и дорого</li></ul></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="viz" id="viz">
+    <div class="floor" aria-hidden="true"></div>
+    <canvas id="stage" aria-label="3D-модель iPhone. Потяните, чтобы повернуть"></canvas>
+    <div class="chap" aria-hidden="true"><span class="n" id="chapN">01</span><span class="dots" id="dots"></span><span class="lbl" id="chapL">Обзор</span></div>
+    <div class="hint" id="hint" aria-hidden="true">Потяните, чтобы повернуть</div>
+    <div class="colors">
+      <div class="name" id="finName" aria-live="polite">Чёрный</div>
+      <div class="row" role="group" aria-label="Цвет корпуса">
+        <button class="sw" data-f="3" aria-pressed="true" aria-label="Чёрный" style="background:#2e2f33"></button>
+        <button class="sw" data-f="0" aria-pressed="false" aria-label="Бургунди" style="background:#5e2236"></button>
+        <button class="sw" data-f="1" aria-pressed="false" aria-label="Голубой" style="background:#8faac6"></button>
+        <button class="sw" data-f="2" aria-pressed="false" aria-label="Серебристый" style="background:#d6d8dc"></button>
+      </div>
+    </div>
+    <div class="status" id="status"><div>Загружаем 3D-модель<div class="bar2"><i id="loadbar"></i></div></div></div>
+  </div>
+</div>
+
+<footer><div class="in">
+  <div>Концепт-обзор, проект для портфолио. Не связан с Apple. Данные: <a href="https://www.itpro.com/hardware/mobile-phones/the-apple-iphone-18-pro-is-the-coolest-iphone-ever-thanks-to-its-new-vapor-chamber-but-its-the-variable-aperture-thats-the-real-hot-topic" target="_blank" rel="noopener">IT Pro</a>,
+  <a href="https://www.forbes.com/sites/forbes-personal-shopper/2026/10/14/apple-iphone-18-pro-review/" target="_blank" rel="noopener">Forbes</a>,
+  <a href="https://www.phonearena.com/phones/Apple-iPhone-18-Pro_id12884" target="_blank" rel="noopener">PhoneArena</a>,
+  <a href="https://www.macrumors.com/roundup/iphone-18/" target="_blank" rel="noopener">MacRumors</a>.</div>
+  <div>3D-модель: «<a href="https://sketchfab.com/3d-models/iphone-18-pro-max-high-quality-3d-model-5e40716caa274a789de5b17798ee2e78" target="_blank" rel="noopener">iPhone 18 Pro Max – High Quality 3D Model</a>», автор <a href="https://sketchfab.com/Riju.mandal" target="_blank" rel="noopener">Pro Animator</a>, лицензия <a href="http://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. Пол сцены удалён.</div>
+</div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script>
+(function(){
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const secs=$$('[data-pose]'),navA=$$('.nav a');
+const io='IntersectionObserver' in window;
+
+/* reveal + counters */
+secs.forEach(s=>{if(!io||reduce||s.getBoundingClientRect().top<innerHeight*.9)return;s.classList.add('pre');
+  new IntersectionObserver((es,o)=>{if(es[0].isIntersecting){s.classList.remove('pre');o.disconnect()}},{threshold:.2}).observe(s)});
+$$('[data-count]').forEach(el=>{if(!io||reduce)return;const n=+el.dataset.count;
+  new IntersectionObserver((es,o)=>{if(!es[0].isIntersecting)return;o.disconnect();const t0=performance.now();
+    (function f(t){const k=Math.min(1,(t-t0)/1400),e=1-Math.pow(1-k,4);el.textContent=Math.round(n*e).toLocaleString('ru-RU');if(k<1)requestAnimationFrame(f)})(t0)},{threshold:.6}).observe(el)});
+
+const viz=$('#viz'),canvas=$('#stage'),status=$('#status'),loadbar=$('#loadbar');
+const fail=m=>{status.innerHTML='<div>'+m+'</div>'};
+if(!window.THREE||!THREE.GLTFLoader){fail('3D-модель не загрузилась. Обновите страницу.');return}
+
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.outputEncoding=THREE.sRGBEncoding;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.3;
+renderer.physicallyCorrectLights=true;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(26,1,.1,60);camera.position.set(0,0,9);
+
+/* neutral studio reflections */
+const ec=document.createElement('canvas');ec.width=1024;ec.height=512;const e=ec.getContext('2d');
+const eg=e.createLinearGradient(0,0,0,512);eg.addColorStop(0,'#3a3b40');eg.addColorStop(.5,'#0c0c0e');eg.addColorStop(1,'#18191c');
+e.fillStyle=eg;e.fillRect(0,0,1024,512);
+const box=(x,y,w,h,a,bl)=>{e.filter=`blur(${bl}px)`;e.fillStyle=`rgba(255,255,255,${a})`;e.fillRect(x,y,w,h);e.filter='none'};
+box(140,80,180,240,1,6);box(600,50,300,70,.95,8);box(430,140,50,280,.7,10);box(880,190,100,200,.5,18);box(10,210,90,170,.45,18);box(300,430,420,50,.35,20);
+const envT=new THREE.CanvasTexture(ec);envT.mapping=THREE.EquirectangularReflectionMapping;envT.encoding=THREE.sRGBEncoding;
+const pm=new THREE.PMREMGenerator(renderer);scene.environment=pm.fromEquirectangular(envT).texture;envT.dispose();pm.dispose();
+const key=new THREE.DirectionalLight(0xffffff,3.2);key.position.set(4,5,6);scene.add(key);
+const rim=new THREE.DirectionalLight(0xc8d2ff,1.6);rim.position.set(-5,2,-4);scene.add(rim);
+scene.add(new THREE.AmbientLight(0xffffff,.6));
+const front=new THREE.DirectionalLight(0xffffff,1.4);front.position.set(-1,1,8);scene.add(front);
+
+const pivot=new THREE.Group();scene.add(pivot);
+const H=3.0; // normalized phone height in scene units
+
+/* poses per chapter: front = ry 0 */
+const P=[
+  {rx:.05,ry:-.4,rz:.02,s:1},             // hero
+  {rx:.02,ry:-.12,rz:0,s:1.06},           // display: face on
+  {rx:.08,ry:Math.PI+.38,rz:-.04,s:1.08}, // camera: back
+  {rx:-.5,ry:Math.PI*2-.6,rz:.3,s:.98},   // performance: tilted
+  {rx:.04,ry:Math.PI*2+.3,rz:0,s:1},      // battery
+  {rx:.06,ry:Math.PI*2+Math.PI/2-.14,rz:.06,s:1.04}, // body: side
+  {rx:.05,ry:Math.PI*3+.35,rz:0,s:.98},   // compare: back three-quarter
+  {rx:.03,ry:Math.PI*4-.3,rz:0,s:1},      // specs: front
+  {rx:.08,ry:Math.PI*4+.45,rz:-.05,s:.98} // verdict
+];
+const cur={rx:.2,ry:-2.8,rz:0,s:.8};
+let fit=1,lift=0;
+function resize(){const r=viz.getBoundingClientRect();renderer.setSize(r.width,r.height,false);camera.aspect=r.width/r.height;
+  const hh=Math.tan(THREE.MathUtils.degToRad(13))*9;
+  const phoneW=innerWidth<=860;fit=Math.min(1,(hh*(phoneW?.66:.76))/(H/2),(hh*camera.aspect*.92)/(H/2*.5));lift=hh*(phoneW?.16:.08);camera.updateProjectionMatrix()}
+new ResizeObserver(resize).observe(viz);resize();
+
+/* load the model */
+/* finishes */
+const FIN=[
+  {name:'Бургунди',body:'#5e2236',dark:'#2a0f19',wall:['#3d0f20','#a3364f','#f0a27a']},
+  {name:'Голубой',body:'#8faac6',dark:'#3d4c5c',wall:['#14243a','#5d86b5','#c9dcf0']},
+  {name:'Серебристый',body:'#d6d8dc',dark:'#8d9096',wall:['#25272c','#8c9099','#eceef1']},
+  {name:'Чёрный',body:'#2e2f33',dark:'#141416',wall:['#050506','#2d2f36','#7a7f8c']}
+];
+let fin=3;const bodyMats=[],darkMats=[];
+let ISL={u:.5,v:.034,w:.17,h:.026};
+const lin=h=>new THREE.Color(h).convertSRGBToLinear();
+const finName=$('#finName'),sws=$$('.sw');
+sws.forEach(b=>b.addEventListener('click',()=>{fin=+b.dataset.f;sws.forEach(x=>x.setAttribute('aria-pressed',x===b));finName.textContent=FIN[fin].name;paintHome()}));
+
+/* home screen texture */
+const roundRect=(w,h,r)=>{const s=new THREE.Shape(),x=-w/2,y=-h/2;
+  s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.absarc(x+w-r,y+r,r,-Math.PI/2,0);s.lineTo(x+w,y+h-r);s.absarc(x+w-r,y+h-r,r,0,Math.PI/2);
+  s.lineTo(x+r,y+h);s.absarc(x+r,y+h-r,r,Math.PI/2,Math.PI);s.lineTo(x,y+r);s.absarc(x+r,y+r,r,Math.PI,Math.PI*1.5);return s};
+const SC=document.createElement('canvas');SC.width=600;SC.height=1306;const g2=SC.getContext('2d');
+const screenTex=new THREE.CanvasTexture(SC);screenTex.encoding=THREE.sRGBEncoding;screenTex.anisotropy=8;
+const rp=(x,y,w,h,r)=>{g2.beginPath();if(g2.roundRect)g2.roundRect(x,y,w,h,r);else{g2.moveTo(x+r,y);g2.arcTo(x+w,y,x+w,y+h,r);g2.arcTo(x+w,y+h,x,y+h,r);g2.arcTo(x,y+h,x,y,r);g2.arcTo(x,y,x+w,y,r);g2.closePath()}};
+const F=(w,s,fam)=>`${w} ${s}px ${fam==='d'?'"Inter Tight"':'Inter'}, system-ui, sans-serif`;
+function rp2(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
+/* lock screen */
+function paintHome(){
+  const W=SC.width,H=SC.height,f=FIN[fin],now=new Date();
+  // wallpaper tied to the chosen finish
+  const gr=g2.createLinearGradient(0,0,W*.35,H);gr.addColorStop(0,f.wall[0]);gr.addColorStop(.6,f.wall[1]);gr.addColorStop(1,f.wall[2]);
+  g2.fillStyle=gr;g2.fillRect(0,0,W,H);
+  const blob=(x,y,r,c,al)=>{const rg=g2.createRadialGradient(x,y,0,x,y,r);rg.addColorStop(0,c);rg.addColorStop(1,'rgba(0,0,0,0)');g2.globalAlpha=al;g2.fillStyle=rg;g2.fillRect(0,0,W,H);g2.globalAlpha=1};
+  blob(W*.9,H*.62,W*.75,f.wall[2],.5);blob(W*.05,H*.2,W*.7,f.wall[0],.7);
+  // soft dune lines
+  g2.strokeStyle='rgba(255,255,255,.07)';g2.lineWidth=2;
+  for(let i=0;i<10;i++){g2.beginPath();const y0=H*.58+i*34;g2.moveTo(0,y0);for(let x=0;x<=W;x+=20)g2.lineTo(x,y0+Math.sin(x/110+i*.5)*26);g2.stroke()}
+  // status bar
+  g2.fillStyle='#fff';g2.textAlign='left';
+  for(let i=0;i<4;i++){rp(W-168+i*10,62-8-i*5,7,8+i*5,2);g2.fill()}
+  g2.font=F(600,20);g2.fillText('5G',W-120,62);
+  g2.strokeStyle='rgba(255,255,255,.55)';g2.lineWidth=2;rp(W-86,44,38,20,6);g2.stroke();rp(W-83,47,28,14,4);g2.fill();rp(W-46,50,3,8,1.5);g2.fill();
+  // island
+  const iw=Math.max(80,Math.min(180,ISL.w*W)),ih=Math.max(26,Math.min(48,ISL.h*H));
+  g2.fillStyle='#000';rp(ISL.u*W-iw/2,ISL.v*H-ih/2,iw,ih,ih/2);g2.fill();
+  // lock glyph
+  g2.save();g2.translate(W/2,128);g2.strokeStyle='#fff';g2.lineWidth=3.5;
+  g2.beginPath();g2.arc(0,-6,9,Math.PI,0);g2.lineTo(9,0);g2.moveTo(-9,0);g2.lineTo(-9,-6);g2.stroke();
+  g2.fillStyle='#fff';rp(-13,0,26,20,5);g2.fill();g2.restore();
+  // date + time
+  g2.textAlign='center';
+  const date=now.toLocaleDateString('ru-RU',{weekday:'long',day:'numeric',month:'long'});
+  g2.fillStyle='rgba(255,255,255,.9)';g2.font=F(600,27);g2.fillText(date.charAt(0).toUpperCase()+date.slice(1),W/2,212);
+  const hm=now.toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'});
+  g2.save();g2.shadowColor='rgba(0,0,0,.18)';g2.shadowBlur=24;
+  g2.fillStyle='rgba(255,255,255,.96)';g2.font=F(700,188,'d');g2.fillText(hm,W/2,400);g2.restore();
+  // small widgets row
+  const wy=450,ws=86,gap=22,x0=W/2-(ws*3+gap*2)/2;
+  for(let i=0;i<3;i++){const cx=x0+i*(ws+gap)+ws/2,cy=wy+ws/2;
+    g2.fillStyle='rgba(255,255,255,.16)';g2.beginPath();g2.arc(cx,cy,ws/2,0,7);g2.fill();
+    g2.fillStyle='#fff';g2.textAlign='center';
+    if(i===0){g2.strokeStyle='rgba(255,255,255,.3)';g2.lineWidth=6;g2.beginPath();g2.arc(cx,cy,30,0,7);g2.stroke();
+      g2.strokeStyle='#fff';g2.lineCap='round';g2.beginPath();g2.arc(cx,cy,30,-Math.PI/2,-Math.PI/2+Math.PI*2*.86);g2.stroke();g2.lineCap='butt';
+      g2.font=F(700,22,'d');g2.fillText('86',cx,cy+8)}
+    else if(i===1){g2.font=F(700,15);g2.fillText(now.toLocaleDateString('ru-RU',{weekday:'short'}).toUpperCase(),cx,cy-8);g2.font=F(700,28,'d');g2.fillText(String(now.getDate()),cx,cy+24)}
+    else{g2.fillStyle='#ffd34d';g2.beginPath();g2.arc(cx-6,cy-6,14,0,7);g2.fill();g2.fillStyle='#fff';g2.beginPath();g2.arc(cx+4,cy+8,13,0,7);g2.arc(cx+16,cy+10,10,0,7);g2.arc(cx-8,cy+11,9,0,7);g2.fill()}
+  }
+  // one notification
+  const ny=H-360;g2.fillStyle='rgba(255,255,255,.2)';rp(36,ny,W-72,108,30);g2.fill();
+  g2.fillStyle='rgba(255,255,255,.95)';rp(58,ny+22,64,64,16);g2.fill();
+  g2.fillStyle=f.wall[1];g2.beginPath();g2.arc(90,ny+54,16,0,7);g2.fill();
+  g2.textAlign='left';g2.fillStyle='#fff';g2.font=F(600,21);g2.fillText('Обзор iPhone 18 Pro',140,ny+48);
+  g2.fillStyle='rgba(255,255,255,.75)';g2.font=F(400,19);g2.fillText('Листайте страницу дальше',140,ny+78);
+  g2.textAlign='right';g2.fillStyle='rgba(255,255,255,.6)';g2.font=F(400,16);g2.fillText('сейчас',W-60,ny+46);
+  // flashlight + camera
+  const by=H-130;
+  [[110,'torch'],[W-110,'cam']].forEach(([x,k])=>{g2.fillStyle='rgba(0,0,0,.28)';g2.beginPath();g2.arc(x,by,48,0,7);g2.fill();
+    g2.fillStyle='#fff';g2.strokeStyle='#fff';g2.lineWidth=3;
+    if(k==='torch'){rp(x-9,by-22,18,10,3);g2.fill();g2.beginPath();g2.moveTo(x-9,by-10);g2.lineTo(x-6,by+22);g2.lineTo(x+6,by+22);g2.lineTo(x+9,by-10);g2.closePath();g2.stroke()}
+    else{rp(x-22,by-14,44,30,7);g2.stroke();g2.beginPath();g2.arc(x,by+1,9,0,7);g2.stroke();rp(x-8,by-20,16,6,2);g2.fill()}});
+  // home indicator
+  g2.fillStyle='rgba(255,255,255,.9)';rp(W/2-80,H-30,160,9,5);g2.fill();
+  screenTex.needsUpdate=true;
+}
+paintHome();
+document.fonts&&document.fonts.ready.then(paintHome);
+setInterval(paintHome,15000);
+
+function onModel(gltf){
+  const root=gltf.scene;
+  // drop the floor plane shipped with the model
+  const drop=[];root.traverse(o=>{if(o.isMesh&&((o.material&&o.material.name==='Material.003')||/plane/i.test(o.parent&&o.parent.name||'')))drop.push(o)});
+  drop.forEach(o=>o.parent.remove(o));
+  root.traverse(o=>{if(o.isMesh){const ms=Array.isArray(o.material)?o.material:[o.material];
+    ms.forEach(m=>{if(m.map)m.map.anisotropy=8;if('envMapIntensity' in m)m.envMapIntensity=1.6;m.needsUpdate=true})}});
+  // body materials for recoloring
+  root.traverse(o=>{if(!o.isMesh)return;(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{
+    if(m.name==='17ProMax_color'||m.name==='17ProMax_color2')bodyMats.push(m);
+    else if(m.name==='17ProMax_color3')darkMats.push(m)})});
+  bodyMats.forEach(m=>m.color.copy(lin(FIN[fin].body)));darkMats.forEach(m=>m.color.copy(lin(FIN[fin].dark)));
+  // the phone ships tilted ~5° inside its own node: stand it upright
+  root.traverse(o=>{if(o.name==='Object_7_0')o.quaternion.identity()});
+  root.updateMatrixWorld(true);
+  // paint the home screen onto the model's own display mesh (flat in its local XY, facing -Z)
+  let screenMesh=null,islandMesh=null;
+  root.traverse(o=>{if(!o.isMesh)return;const n=o.material&&o.material.name;
+    if(n==='Material.001')screenMesh=o;else if(n==='17ProMax_Black2.001')islandMesh=o});
+  if(screenMesh){
+    const geo=screenMesh.geometry.clone();geo.computeBoundingBox();const bb=geo.boundingBox,w=bb.max.x-bb.min.x,h=bb.max.y-bb.min.y;
+    const pos=geo.attributes.position,uvs=new Float32Array(pos.count*2);
+    for(let i=0;i<pos.count;i++){uvs[i*2]=(bb.max.x-pos.getX(i))/w;uvs[i*2+1]=(pos.getY(i)-bb.min.y)/h}
+    geo.setAttribute('uv',new THREE.BufferAttribute(uvs,2));geo.translate(0,0,-0.03);
+    screenMesh.geometry=geo;
+    screenMesh.material=new THREE.MeshStandardMaterial({color:0x000000,emissive:0xffffff,emissiveMap:screenTex,roughness:.08,metalness:0,toneMapped:false,side:THREE.DoubleSide,polygonOffset:true,polygonOffsetFactor:-4,polygonOffsetUnits:-4});screenMesh.renderOrder=2;
+    if(islandMesh){ // locate the island in screen UV space so the drawn one lines up
+      const wb=new THREE.Box3().setFromObject(islandMesh),ic=wb.getCenter(new THREE.Vector3()),is=wb.getSize(new THREE.Vector3());
+      const inv=new THREE.Matrix4().copy(screenMesh.matrixWorld).invert(),lc=ic.clone().applyMatrix4(inv);
+      const sx=new THREE.Vector3().setFromMatrixScale(screenMesh.matrixWorld);
+      ISL={u:(bb.max.x-lc.x)/w,v:1-(lc.y-bb.min.y)/h,w:is.x/sx.x/w,h:is.y/sx.y/h};
+    }
+    paintHome();
+  }
+  // center + normalize height; the model's screen faces -Z, so turn it to face the viewer
+  const box=new THREE.Box3().setFromObject(root),size=box.getSize(new THREE.Vector3()),c=box.getCenter(new THREE.Vector3());
+  root.position.sub(c);
+  const holder=new THREE.Group();holder.add(root);holder.scale.setScalar(H/size.y);holder.rotation.y=Math.PI;
+  pivot.add(holder);
+  status.style.opacity=0;setTimeout(()=>status.remove(),500);
+}
+// the model ships as a base64 script next to the page; parse it once it arrives
+const onErr=err=>{console.warn(err);fail('Не удалось загрузить 3D-модель.')};
+let fake=0;const tick=setInterval(()=>{fake=Math.min(90,fake+(90-fake)*.08);loadbar.style.width=fake+'%'},120);
+const sc=document.createElement('script');sc.src='model.js';sc.async=true;
+sc.onload=()=>{clearInterval(tick);loadbar.style.width='100%';
+  try{const bin=atob(window.__PHONE_GLB),buf=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)buf[i]=bin.charCodeAt(i);
+    window.__PHONE_GLB=null;new THREE.GLTFLoader().parse(buf.buffer,'',onModel,onErr)}catch(err){onErr(err)}};
+sc.onerror=()=>{clearInterval(tick);onErr('script')};
+document.body.appendChild(sc);
+
+const dotsEl=$('#dots'),chapN=$('#chapN'),chapL=$('#chapL'),hint=$('#hint');
+const NAMES=secs.map(x=>(x.querySelector('.kicker')||{}).textContent||'');
+secs.forEach(()=>dotsEl.appendChild(document.createElement('i')));
+let dragY=0,dragX=0,dragging=false,px=0,py=0;
+canvas.addEventListener('pointerdown',ev=>{if(ev.pointerType==='touch')return;dragging=true;px=ev.clientX;py=ev.clientY;canvas.setPointerCapture(ev.pointerId);hint.style.opacity=0});
+canvas.addEventListener('pointermove',ev=>{if(!dragging)return;dragY+=(ev.clientX-px)*.012;dragX=Math.max(-.6,Math.min(.6,dragX+(ev.clientY-py)*.006));px=ev.clientX;py=ev.clientY});
+const endDrag=()=>{dragging=false};canvas.addEventListener('pointerup',endDrag);canvas.addEventListener('pointercancel',endDrag);
+let mx=0,my=0;addEventListener('pointermove',ev=>{mx=ev.clientX/innerWidth-.5;my=ev.clientY/innerHeight-.5},{passive:true});
+const lerp=(a,b,t)=>a+(b-a)*t,smooth=t=>t*t*(3-2*t);
+function chapterPos(){
+  const vb=viz.getBoundingClientRect(),mid=innerWidth<=860?(Math.max(0,vb.bottom)+innerHeight)/2:innerHeight*.5,c=secs.map(s=>{const r=s.getBoundingClientRect();return r.top+r.height/2});
+  if(mid<=c[0])return 0;
+  for(let i=0;i<c.length-1;i++)if(mid<c[i+1])return i+smooth((mid-c[i])/(c[i+1]-c[i]));
+  return c.length-1;
+}
+let last=-1;const t0=performance.now();
+(function loop(){
+  requestAnimationFrame(loop);
+  const t=(performance.now()-t0)/1000,f=chapterPos(),i=Math.floor(f),k=f-i,j=Math.min(i+1,P.length-1);
+  const near=Math.round(f);
+  if(near!==last){last=near;chapN.textContent=String(near+1).padStart(2,'0');chapL.textContent=NAMES[near];[...dotsEl.children].forEach((d,n)=>d.classList.toggle('on',n===near));navA.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+secs[near].id))}
+  const A=P[i],B=P[j],ease=reduce?1:.075;
+  for(const p of ['rx','ry','rz','s'])cur[p]=lerp(cur[p],lerp(A[p],B[p],k),ease);
+  if(!dragging){dragY*=.94;dragX*=.92}
+  pivot.rotation.set(cur.rx+dragX+(reduce?0:my*.12),cur.ry+dragY+(reduce?0:mx*.3),cur.rz);
+  pivot.scale.setScalar(cur.s*fit);
+  pivot.position.y=lift+(reduce?0:Math.sin(t*1.1)*.05);
+  const tb=lin(FIN[fin].body),td=lin(FIN[fin].dark),q=reduce?1:.08;
+  bodyMats.forEach(m=>m.color.lerp(tb,q));darkMats.forEach(m=>m.color.lerp(td,q));
+  renderer.render(scene,camera);
+})();
+})();
+</script>
+</body>
+</html>
